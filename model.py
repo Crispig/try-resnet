@@ -89,7 +89,6 @@ class resnet18(nn.Module):
 
         # layer stage 1
         res = output
-        # new_res_list.append(res)
         output = F.relu(self.bn_1_1_stage_1(self.conv_1_1_stage_1(output)))
         output = self.bn_2_1_stage_1(self.conv_2_1_stage_1(output))
         output += res
@@ -99,10 +98,8 @@ class resnet18(nn.Module):
             idx += 1
         new_res_list.append(output)
         output = F.relu(output)
-        # new_res_list.append(output)
 
         res = output
-        # new_res_list.append(res)
         output = F.relu(self.bn_1_2_stage_1(self.conv_1_2_stage_1(output)))
         output = self.bn_2_2_stage_1(self.conv_2_2_stage_1(output))
         output += res
@@ -111,11 +108,9 @@ class resnet18(nn.Module):
             idx += 1
         new_res_list.append(output)
         output = F.relu(output)
-        # new_res_list.append(output)
 
         # layer stage 2
         res = self.res_stage_2_1(output)
-        # new_res_list.append(res)
         output = F.relu(self.bn_1_1_stage_2(self.conv_1_1_stage_2(output)))
         output = self.bn_2_1_stage_2(self.conv_2_1_stage_2(output))
         output += res
@@ -124,10 +119,8 @@ class resnet18(nn.Module):
             idx += 1
         new_res_list.append(output)
         output = F.relu(output)
-        # new_res_list.append(output)
 
         res = self.res_stage_2_2(output)
-        # new_res_list.append(res)
         output = F.relu(self.bn_1_2_stage_2(self.conv_1_2_stage_2(output)))
         output = self.bn_2_2_stage_2(self.conv_2_2_stage_2(output))
         output += res
@@ -136,11 +129,9 @@ class resnet18(nn.Module):
             idx += 1
         new_res_list.append(output)
         output = F.relu(output)
-        # new_res_list.append(output)
 
         # layer stage 3
         res = self.res_stage_3_1(output)
-        # new_res_list.append(res)
         output = F.relu(self.bn_1_1_stage_3(self.conv_1_1_stage_3(output)))
         output = self.bn_2_1_stage_3(self.conv_2_1_stage_3(output))
         output += res
@@ -149,7 +140,6 @@ class resnet18(nn.Module):
             idx += 1
         new_res_list.append(output)
         output = F.relu(output)
-        # new_res_list.append(output)
 
         res = self.res_stage_3_2(output)
         # new_res_list.append(res)
@@ -161,11 +151,9 @@ class resnet18(nn.Module):
             idx += 1
         new_res_list.append(output)
         output = F.relu(output)
-        # new_res_list.append(output)
 
         # layer stage 4
         res = self.res_stage_4_1(output)
-        # new_res_list.append(res)
         output = F.relu(self.bn_1_1_stage_4(self.conv_1_1_stage_4(output)))
         output = self.bn_2_1_stage_4(self.conv_2_1_stage_4(output))
         output += res
@@ -174,10 +162,8 @@ class resnet18(nn.Module):
             idx += 1
         new_res_list.append(output)
         output = F.relu(output)
-        # new_res_list.append(output)
 
         res = self.res_stage_4_2(output)
-        # new_res_list.append(res)
         output = F.relu(self.bn_1_2_stage_4(self.conv_2_1_stage_4(output)))
         output = self.bn_2_2_stage_4(self.conv_2_2_stage_4(output))
         output += res
@@ -186,7 +172,6 @@ class resnet18(nn.Module):
             idx += 1
         new_res_list.append(output)
         output = F.relu(output)
-        # new_res_list.append(output)
 
         # output stage
         output = F.avg_pool2d(output, 4)
