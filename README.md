@@ -4,9 +4,7 @@
 
 ## This is a coursework on AI security
 
-<!--Creating your own github account.Implementing your own deep neural network (in Pytorch, PaddlePaddle…).Training it on any datasets, for example, CIFAR10.Tuning a hyper-parameter and analyzing its effects on performance.Writing a README.md to report your findings.-->
-
-
+Creating your own github account.Implementing your own deep neural network (in Pytorch, PaddlePaddle…).Training it on any datasets, for example, CIFAR10.Tuning a hyper-parameter and analyzing its effects on performance.Writing a README.md to report your findings.
 
 ## What I did
 
@@ -23,17 +21,25 @@
 
 调整不同的学习率，观察准确率变化
 
+| learning rate | ACC        |
+| ------------- | ---------- |
+| 0.001         | 0.8947     |
+| 0.01          | **0.9198** |
+| 0.1           | 0.8703     |
 
+学习率较大，参数的更新速度就会很快，可以加快网络的收敛速度，但如果学习率过大，可能会导致参数在最优解附近震荡，代价函数难以收敛，甚至可能会错过最优解，导致参数向错误的方向更新。
+
+如果学习率较小，网络可能不会错过最优点，但是网络学习速度会变慢。同时，如果学习率过小，则很可能会陷入局部最优点。
 
 ## benchmark
 
 batch size = 128
 
-learning rate = 1e-3
+learning rate = 1e-2
 
 epoch = 50
 
-**ACC : 92.55%**
+**ACC : 91.98%**
 
 
 
@@ -59,24 +65,26 @@ epoch = 50
 
 如果在训练一开始就启用shortcut
 
+| method    | ACC           |
+| --------- | ------------- |
+| benchmark | **91.98%**    |
+| epoch_res | 10%（不收敛） |
+| batch_res | 91.72%        |
+
+
+
+在训练40轮之后启用shortcut
+
 | method    | ACC        |
 | --------- | ---------- |
-| benchmark | **92.55%** |
-| epoch_res | 10%        |
-| batch_res | 88.36%     |
+| benchmark | 91.98%     |
+| epoch_res | 91.36%     |
+| batch_res | **92.05%** |
 
 
 
-在训练45轮之后启用shortcut
+### idea
 
-| method    | ACC        |
-| --------- | ---------- |
-| benchmark | 92.55%     |
-| epoch_res | **92.68%** |
-| batch_res | 91.44%     |
+如果一开始数据分布不稳定的时候就引入额外的信息会导致训练难以收敛，在loss下降准确率逐渐稳定之后，模型学到合理的数据分布之后，引入跨epoch的信息，会让模型获取更多信息。
 
-
-
-### 结论
-
-初步估计是因为如果一开始数据分布不稳定的时候就引入额外的信息会导致训练难以收敛，在准确率逐渐稳定之后，引入跨epoch的信息，会让模型获取更多信息。当然后续需要做更多的实验，来验证这种想法。
+后续需要做更多的实验，来验证和优化这个idea                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   

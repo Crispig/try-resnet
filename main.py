@@ -1,4 +1,3 @@
-'''Train CIFAR10 with PyTorch.'''
 import torch
 import torch.nn as nn
 import torch.optim as optim
@@ -22,7 +21,7 @@ def setup_seed(seed):
 
 setup_seed(0)
 
-learning_rate = 0.1
+learning_rate = 0.01
 
 device = 'cuda' if torch.cuda.is_available() else 'cpu'
 
@@ -40,7 +39,7 @@ transform_test = transforms.Compose([
     transforms.Normalize((0.4914, 0.4822, 0.4465), (0.2023, 0.1994, 0.2010)),
 ])
 
-trainset = torchvision.datasets.CIFAR10(root='./data', train=False, download=False, transform=transform_train)
+trainset = torchvision.datasets.CIFAR10(root='./data', train=True, download=False, transform=transform_train)
 trainloader = torch.utils.data.DataLoader(trainset, batch_size=128, shuffle=True, num_workers=2)
 
 testset = torchvision.datasets.CIFAR10(root='./data', train=False, download=False, transform=transform_test)
@@ -101,21 +100,21 @@ def train(epoch):
         
 
         is_time_res = False
-        # if epoch > 45:
-        #     is_time_res = True
+        if epoch > 40:
+            is_time_res = True
         if inputs.shape[0] != 128:
             is_time_res = False
         outputs,  new_res_list= net(inputs, old_res_list, is_time_res)
 
-        # if epoch > 45:
-        #     old_res_list.clear()
+        if epoch > 40:
+            old_res_list.clear()
 
-        #     if inputs.shape[0] == 128:
-        #         for i in range(len(new_res_list)):
-        #             # x = new_res_list[i].clone().detach()*0.05 + last_iter_temp[i]*0.05
-        #             x = new_res_list[i].clone().detach()*0.05
-        #             # last_iter_list[i] += new_res_list[i].clone().detach()*0.05
-        #             old_res_list.append(x)
+            if inputs.shape[0] == 128:
+                for i in range(len(new_res_list)):
+                    # x = new_res_list[i].clone().detach()*0.05 + last_iter_temp[i]*0.05
+                    x = new_res_list[i].clone().detach()*0.05
+                    # last_iter_list[i] += new_res_list[i].clone().detach()*0.05
+                    old_res_list.append(x)
 
 
         loss = criterion(outputs, targets)
@@ -162,7 +161,7 @@ def test(epoch):
 for epoch in range(start_epoch, start_epoch+50):
     train(epoch)
 
-    # if epoch > 47:
+    # if epoch > 40:
     #     old_res_list.clear()
     #     for i in range(len(last_iter_list)):
     #         old_res_list.append(last_iter_list[i] / 80)
@@ -174,14 +173,14 @@ for epoch in range(start_epoch, start_epoch+50):
     #         if i %2 != 0:
     #             plane *= 2
     #             size /= 2
-    # if epoch > 45:
-    #     plane = 64
-    #     size = 32
+    if epoch > 40:
+        plane = 64
+        size = 32
 
-    #     for i in range(8):
-    #         old_res_list.append(torch.zeros(128, plane, int(size), int(size), device=device, requires_grad=False))
-    #         if i %2 != 0:
-    #             plane *= 2
-    #             size /= 2
+        for i in range(8):
+            old_res_list.append(torch.zeros(128, plane, int(size), int(size), device=device, requires_grad=False))
+            if i %2 != 0:
+                plane *= 2
+                size /= 2
     test(epoch)
     scheduler.step()
